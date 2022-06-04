@@ -70,7 +70,6 @@ namespace ExpenseTracker.Infrastructure.Contracts
         /// <param name="predicate"></param>
         /// <returns></returns>
         T FirstOrDefault(Expression<Func<T, bool>> predicate);
-      
-
+        
     }
 }
