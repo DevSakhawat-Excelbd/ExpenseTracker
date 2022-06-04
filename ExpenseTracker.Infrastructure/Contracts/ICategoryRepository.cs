@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ExpenseTracker.Infrastructure.Contracts
 {
-    public interface ICategoryRepositoy : IRepository<Category>
+    public interface ICategoryRepository : IRepository<Category>
     {
 
     }
