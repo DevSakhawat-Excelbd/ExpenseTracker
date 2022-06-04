@@ -8,5 +8,10 @@ namespace ExpenseTracker.Infrastructure.Contracts
 {
    public interface IUnitOfWorkIWin
    {
+        void SaveChanges();
+
+        Task SaveChangesAsync();
+        IExpenseDetailRepository ExpenseDetailRepository { get; }
+        ICategoryRepository CategoryRepository { get; }
    }
 }

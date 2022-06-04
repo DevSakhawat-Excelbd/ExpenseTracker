@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace ExpenseTracker.Infrastructure.Repositories
 {
-    public class CategoryRepositoy : Repository<Category>, ICategoryRepositoy
+    public class CategoryRepository : Repository<Category>, ICategoryRepository
     {
         private readonly DataContext context;
-        public CategoryRepositoy(DataContext context) : base(context)
+        public CategoryRepository(DataContext context) : base(context)
         {
             this.context = context;
         }
