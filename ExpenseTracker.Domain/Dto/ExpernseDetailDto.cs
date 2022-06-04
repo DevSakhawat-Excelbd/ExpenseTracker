@@ -10,6 +10,9 @@ namespace ExpenseTracker.Domain.Dto
 {
    public class ExpernseDetailDto
    {
+      /// <summary>
+      /// Primary Key of Category Entity
+      /// </summary>
       [Key]
       public Guid ExpenseDetaisId { get; set; }
       /// <summary>

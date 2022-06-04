@@ -52,7 +52,7 @@ namespace ExpenseTracker.Infrastructure.Contracts
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        Task<T?> GetByIdAsync(int key);
+        Task<T?> GetByIdAsync(Guid key);
         /// <summary>
         /// Loads all rows from the database table.
         /// </summary>
