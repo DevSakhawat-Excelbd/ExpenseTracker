@@ -40,7 +40,7 @@ namespace ExpenseTracker.API.Controllers
          catch (Exception)
          {
             return StatusCode(StatusCodes.Status500InternalServerError, "Something went wrong!");
-         }      
+         }
       }
 
       [HttpPost]
@@ -108,7 +108,7 @@ namespace ExpenseTracker.API.Controllers
       /// <returns></returns>
       [HttpGet]
       [Route("[action]/{key}")]
-      public async Task<IActionResult> FindAdmissionByKey(Guid key)
+      public async Task<IActionResult> FindCategoryByKey(Guid key)
       {
          try
          {

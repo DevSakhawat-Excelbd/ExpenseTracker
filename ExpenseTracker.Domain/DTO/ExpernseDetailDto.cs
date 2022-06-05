@@ -41,6 +41,6 @@ namespace ExpenseTracker.Domain.Dto
         /// <summary>
         /// Indicates the row is deleted or not.
         /// </summary>
-        public bool? IsRowDeleted { get; set; }
+        //public bool? IsRowDeleted { get; set; }
     }
 }
