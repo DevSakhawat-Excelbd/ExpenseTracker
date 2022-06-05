@@ -8,22 +8,25 @@ using System.Threading.Tasks;
 
 namespace ExpenseTracker.Domain.Dto
 {
-   /// <summary>
-   /// Types of category
-   /// </summary>
-
-   public class CategoryDto 
+   public class ExpernseDetailDto
    {
       /// <summary>
-      /// Category Id
+      /// Primary Key of Category Entity
       /// </summary>
       [Key]
-      public Guid CategoryId { get; set; }
+      public Guid ExpenseDetaisId { get; set; }
       /// <summary>
-      /// Expense Category Name
+      /// Entry Expense date
       /// </summary>
-      public string CategoryName { get; set; }
-
+      public DateTime ExpenseDate { get; set; }
+      /// <summary>
+      /// Expense Amount
+      /// </summary>
+      public decimal ExpenseAmount { get; set; }
+      /// <summary>
+      /// Foreign key, Primary key of the Category table.
+      /// </summary>
+      public Guid CategoryId { get; set; }
       /// <summary>
       /// Entry the created date
       /// </summary>
@@ -34,6 +37,5 @@ namespace ExpenseTracker.Domain.Dto
       /// </summary>
       [Column(TypeName = "smalldatetime")]
       public DateTime? ModifiedDate { get; set; }
-
    }
 }
