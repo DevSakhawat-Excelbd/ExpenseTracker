@@ -11,7 +11,7 @@ namespace ExpenseTracker.Infrastructure.Repositories
 {
     public class CategoryRepository : Repository<Category>, ICategoryRepository
     {
-        private readonly DataContext context;
+        protected readonly DataContext context;
         public CategoryRepository(DataContext context) : base(context)
         {
             this.context = context;

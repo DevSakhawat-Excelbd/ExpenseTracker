@@ -13,11 +13,11 @@ namespace ExpenseTracker.Infrastructure.Repositories
 {
     public class Repository<T> : IRepository<T> where T : BaseModel
     {
-        protected readonly DataContext _context;
+        protected readonly DataContext context;
 
         public Repository(DataContext context)
         {
-            this._context = context;
+            this.context = context;
 
         }
         public T Add(T entity)
@@ -25,7 +25,7 @@ namespace ExpenseTracker.Infrastructure.Repositories
             try
             {
                 entity.IsRowDeleted = false;
-                return _context.Set<T>().Add(entity).Entity;
+                return context.Set<T>().Add(entity).Entity;
             }
             catch
             {
@@ -35,7 +35,7 @@ namespace ExpenseTracker.Infrastructure.Repositories
 
         public void AddRange(IEnumerable<T> entities)
         {
-            _context.Set<T>().AddRange(entities);
+            context.Set<T>().AddRange(entities);
         }
 
         public T Update(T entity)
@@ -43,7 +43,7 @@ namespace ExpenseTracker.Infrastructure.Repositories
             try
             {
                 entity.IsRowDeleted = false;
-                return _context.Set<T>().Update(entity).Entity;
+                return context.Set<T>().Update(entity).Entity;
             }
             catch
             {
@@ -55,7 +55,7 @@ namespace ExpenseTracker.Infrastructure.Repositories
         {
             try
             {
-                return _context.Set<T>()
+                return context.Set<T>()
                     .AsQueryable()
                     .AsNoTracking().Where(x => x.IsRowDeleted.Equals(false))
                     .ToList();
@@ -73,14 +73,14 @@ namespace ExpenseTracker.Infrastructure.Repositories
 
         public void RemoveRange(IEnumerable<T> entities)
         {
-            _context.Set<T>().RemoveRange(entities);
+            context.Set<T>().RemoveRange(entities);
         }
 
         public T FirstOrDefault(System.Linq.Expressions.Expression<Func<T, bool>> predicate)
         {
             try
             {
-                return _context.Set<T>().AsQueryable().AsNoTracking().FirstOrDefault(predicate);
+                return context.Set<T>().AsQueryable().AsNoTracking().FirstOrDefault(predicate);
             }
             catch (Exception)
             {
@@ -91,18 +91,18 @@ namespace ExpenseTracker.Infrastructure.Repositories
 
         public async Task<T?> FirstOrDefaultAsync(Expression<Func<T?, bool>> predicate)
         {
-            return await _context.Set<T>().AsQueryable().AsNoTracking().FirstOrDefaultAsync(predicate);
+            return await context.Set<T>().AsQueryable().AsNoTracking().FirstOrDefaultAsync(predicate);
         }
 
         public IEnumerable<T> Query(System.Linq.Expressions.Expression<Func<T, bool>> predicate)
         {
-            var entity = _context.Set<T>().AsNoTracking().Where(predicate);
+            var entity = context.Set<T>().AsNoTracking().Where(predicate);
             return entity;
         }
 
         IQueryable<T> IRepository<T>.GetAll()
         {
-            var entity = _context.Set<T>().AsNoTracking();
+            var entity = context.Set<T>().AsNoTracking();
             return entity;
         }
 
@@ -115,8 +115,8 @@ namespace ExpenseTracker.Infrastructure.Repositories
         {
             try
             {
-                var entity = _context.Set<T>().Find(id);
-                _context.Entry(entity).State = EntityState.Detached;
+                var entity = context.Set<T>().Find(id);
+                context.Entry(entity).State = EntityState.Detached;
                 return entity;
             }
             catch (Exception)
@@ -130,8 +130,8 @@ namespace ExpenseTracker.Infrastructure.Repositories
         {
             try
             {
-                var entity = _context.Set<T>().Find(Key);
-                _context.Entry(entity).State = EntityState.Detached;
+                var entity = context.Set<T>().Find(Key);
+                context.Entry(entity).State = EntityState.Detached;
                 return entity;
             }
             catch (Exception)
@@ -143,25 +143,25 @@ namespace ExpenseTracker.Infrastructure.Repositories
 
         public async Task<T?> GetByIdAsync(Guid id)
         {
-            var entity = await _context.Set<T>().FindAsync(id);
+            var entity = await context.Set<T>().FindAsync(id);
             if (entity == null)
             {
                 return null;
             }
 
-            _context.Entry(entity).State = EntityState.Detached;
+            context.Entry(entity).State = EntityState.Detached;
             return entity;
         }
 
         public async Task<T?> GetByIdAsync(int key)
         {
-            var entity = await _context.Set<T>().FindAsync(key);
+            var entity = await context.Set<T>().FindAsync(key);
             if (entity == null)
             {
                 return null;
             }
 
-            _context.Entry(entity).State = EntityState.Detached;
+            context.Entry(entity).State = EntityState.Detached;
             return entity;
         }
 
