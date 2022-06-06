@@ -7,17 +7,13 @@ namespace ExpenseTracker.Web.Controllers
 {
     public class CategoriesController : Controller
     {
-        //private readonly string BaseUrl;
-        //private readonly IHttpContextAccessor httpContextAccessor;
-        //private readonly HttpClient httpClient;
-        //private ISession? session => httpContextAccessor.HttpContext?.Session;
-        //public CategoriesController(IAppSettings appSettings, IHttpClientFactory httpClientFactory)
-        //{
-        //    this.httpContextAccessor = httpContextAccessor;
-        //    BaseUrl =appSettings.BaseUrl;
-         //  this.httpClient = httpClientFactory.CreateClient(HttpClientExtension.ClientName);
-        //}
+        private readonly ILogger<CategoriesController> _logger;
+        public CategoriesController(ILogger<CategoriesController> logger)
+        {
+            _logger = logger;
+        }
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var catagory = await GetById();
@@ -25,6 +21,7 @@ namespace ExpenseTracker.Web.Controllers
                 return RedirectToAction("Index");
             return View(catagory);
         }
+
         private async Task<CategoryDto?> GetById()
         {
             using var client = new HttpClient();
