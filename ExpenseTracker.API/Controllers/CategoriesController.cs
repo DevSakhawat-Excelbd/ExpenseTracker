@@ -3,6 +3,7 @@ using ExpenseTracker.Domain.Entities;
 using ExpenseTracker.Infrastructure.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ExpenseTracker.API.Controllers
 {
@@ -22,7 +23,27 @@ namespace ExpenseTracker.API.Controllers
       {
          this.unitOfWork = unitOfWork;
       }
+
+      /// <summary>
+      /// Load Category List
+      /// </summary>
+      /// <returns></returns>
       [HttpGet]
+      [Route("[action]")]
+      public async Task<IActionResult> LoadCategory()
+      {
+         try
+         {
+            var categoryList = await unitOfWork.CategoryRepository.GetAll().ToListAsync();
+            return Ok(categoryList);
+         }
+         catch (Exception)
+         {
+            return StatusCode(StatusCodes.Status500InternalServerError, "Something went wrong!");
+         }
+      }
+
+      [HttpPost]
       [Route("[action]")]
       public async Task<IActionResult> AddCategory([FromBody] CategoryDto categoryDto)
       {
@@ -45,6 +66,65 @@ namespace ExpenseTracker.API.Controllers
             return StatusCode(StatusCodes.Status500InternalServerError, "Something went wrong!");
          }
       }
+      /// <summary>
+      /// Edit an Category
+      /// </summary>
+      /// <param name="category"></param>
+      /// <returns></returns>
+      [HttpPut]
+      [Route("[action]")]
+      public async Task<IActionResult> EditCategory(CategoryDto category)
+      {
+         try
+         {
+            var categoryEntity = await unitOfWork.CategoryRepository.GetByIdAsync(category.CategoryId);
+            if (categoryEntity == null)
+            {
+               return NotFound();
+            }
+            else
+            {
+               categoryEntity.CategoryId = category.CategoryId;
+               categoryEntity.CategoryName = category.CategoryName;
+               categoryEntity.ModifiedDate = category.ModifiedDate;
+            }
+            var categoryEdit =  unitOfWork.CategoryRepository.Update(categoryEntity);
+            await unitOfWork.SaveChangesAsync();
+
+            var categoryToResult = await unitOfWork.CategoryRepository.GetByIdAsync(category.CategoryId);
+
+            return Ok(categoryToResult);
+         }
+         catch (Exception)
+         {
+            return StatusCode(StatusCodes.Status500InternalServerError, "Something went wrong!");
+         }
+      }
+
+      /// <summary>
+      /// Find Category by key
+      /// </summary>
+      /// <param name="key"></param>
+      /// <returns></returns>
+      [HttpGet]
+      [Route("[action]/{key}")]
+      public async Task<IActionResult> FindCategoryByKey(Guid key)
+      {
+         try
+         {
+            var category = await unitOfWork.CategoryRepository.GetByIdAsync(key);
+            if (category == null)
+               return NotFound();
+
+            return Ok(category);
+         }
+         catch (Exception)
+         {
+            return StatusCode(StatusCodes.Status500InternalServerError, "Something went wrong!");
+         }
+      }
+
+
 
 
    }
