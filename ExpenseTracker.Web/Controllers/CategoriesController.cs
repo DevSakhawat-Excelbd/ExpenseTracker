@@ -1,9 +1,6 @@
 ﻿using ExpenseTracker.Domain.Dto;
-using ExpenseTracker.Web.Extensions;
-using ExpenseTracker.Web.Models.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System.Net.Http;
 using System.Text;
 
 namespace ExpenseTracker.Web.Controllers
@@ -21,17 +18,17 @@ namespace ExpenseTracker.Web.Controllers
          //  this.httpClient = httpClientFactory.CreateClient(HttpClientExtension.ClientName);
         //}
 
-        public async Task<IActionResult> Index(string categoryId)
+        public async Task<IActionResult> Index()
         {
-            var catagory = await GetById(categoryId);
+            var catagory = await GetById();
             if (catagory == null)
                 return RedirectToAction("Index");
             return View(catagory);
         }
-        private async Task<CategoryDto?> GetById(string categoryId)
+        private async Task<CategoryDto?> GetById()
         {
             using var client = new HttpClient();
-            var response = await client.GetAsync($"https://localhost:7120/Categories/LoadCategory/{categoryId}");
+            var response = await client.GetAsync($"http://localhost:5120/Categories/LoadCategory/");
             if (!response.IsSuccessStatusCode)
                 return null;
             string result = await response.Content.ReadAsStringAsync();
@@ -44,7 +41,7 @@ namespace ExpenseTracker.Web.Controllers
             var data = JsonConvert.SerializeObject(categories);
             using var client = new HttpClient();
             var httpContent = new StringContent(data, Encoding.UTF8, "application/json");
-            var response = await client.PostAsync($"https://localhost:7120/Categories/AddCategory", httpContent);
+            var response = await client.PostAsync($"http://localhost:5120/Categories/AddCategory", httpContent);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -60,7 +57,7 @@ namespace ExpenseTracker.Web.Controllers
             var data = JsonConvert.SerializeObject(categories);
             using var client = new HttpClient();
             var httpContent = new StringContent(data,Encoding.UTF8,"application/json");
-            var response = await client.PutAsync($"https://localhost:7120/Categories/EditCategory", httpContent);
+            var response = await client.PutAsync($"http://localhost:5120/Categories/EditCategory", httpContent);
 
             if (!response.IsSuccessStatusCode)
                 return null;
@@ -72,7 +69,7 @@ namespace ExpenseTracker.Web.Controllers
 
 
         #region Create
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
             var category = new CategoryDto();
            
@@ -102,7 +99,7 @@ namespace ExpenseTracker.Web.Controllers
         #region Edit
         public async Task<IActionResult>Edit(string categoryId)
         {
-            var categories =await GetById(categoryId);
+            var categories =await GetById();
             if (categories == null)
                 return RedirectToAction("Index");
             return View(categories);

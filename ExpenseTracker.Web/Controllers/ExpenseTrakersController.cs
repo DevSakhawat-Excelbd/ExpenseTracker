@@ -86,7 +86,7 @@ namespace ExpenseTracker.Web.Controllers
             var data = JsonConvert.SerializeObject(expernseDetailDto);
             using var client=new HttpClient();
             var httpContent=new StringContent(data, Encoding.UTF8,"application/json");
-            var response = await client.PostAsync($"https://localhost:7120/Categories/AddCategory", httpContent);
+            var response = await client.PostAsync($"https://localhost:5120/Categories/AddCategory", httpContent);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -101,7 +101,7 @@ namespace ExpenseTracker.Web.Controllers
             var data = JsonConvert.SerializeObject(expernseDetailDto);
             using var client = new HttpClient();
             var httpContent = new StringContent(data, Encoding.UTF8, "application/json");
-            var response = await client.PutAsync($"https://localhost:7120/Categories/AddCategory", httpContent);
+            var response = await client.PutAsync($"https://localhost:5120/Categories/AddCategory", httpContent);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -114,7 +114,7 @@ namespace ExpenseTracker.Web.Controllers
         private async Task<ExpernseDetailDto>GetById(string expenseDetaisId)
         {
             using var client =new HttpClient();
-            var response =await client.GetAsync($"https://localhost:7120/Categories/LoadExpenseDetail/{expenseDetaisId}");
+            var response =await client.GetAsync($"https://localhost:5120/Categories/LoadExpenseDetail/{expenseDetaisId}");
             if (!response.IsSuccessStatusCode)
 
                 return null;
@@ -126,7 +126,7 @@ namespace ExpenseTracker.Web.Controllers
         private async Task<List<ExpernseDetailDto>> GetIdByCategoryId(string categoryId)
         {
             using var client = new HttpClient();
-            var response = await client.GetAsync($"https://localhost:7120/Categories/LoadExpenseDetail/{categoryId}");
+            var response = await client.GetAsync($"https://localhost:5120/Categories/LoadExpenseDetail/{categoryId}");
             if (!response.IsSuccessStatusCode)
             {
                 return new List<ExpernseDetailDto>();

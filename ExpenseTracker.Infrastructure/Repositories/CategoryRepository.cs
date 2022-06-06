@@ -16,5 +16,16 @@ namespace ExpenseTracker.Infrastructure.Repositories
         {
             this.context = context;
         }
+
+        public IList<Category> LoadCategory()
+        {
+            var list = (from a in context.Categories
+                        where a.IsRowDeleted.Equals(false)
+                        select new Category
+                        {
+                            CategoryName = a.CategoryName,
+                        }).ToList();
+            return list;
+        }
     }
 }
