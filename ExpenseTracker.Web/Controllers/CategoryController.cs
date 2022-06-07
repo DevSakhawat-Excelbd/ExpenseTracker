@@ -1,14 +1,19 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using ExpenseTracker.Domain.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace ExpenseTracker.Web.Controllers
 {
     public class CategoryController : Controller
     {
         // GET: CategoryController
-        public ActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var category = await GetById();
+            if (category == null)
+                return RedirectToAction("Index");
+            return View(category);
         }
 
         // GET: CategoryController/Details/5
@@ -78,6 +83,16 @@ namespace ExpenseTracker.Web.Controllers
             {
                 return View();
             }
+        }
+        private async Task<Category> GetById()
+        {
+            using var client = new HttpClient();
+            var response = await client.GetAsync($"http://localhost:5120/Categories/LoadCategory/");
+            if (!response.IsSuccessStatusCode)
+                return null;
+            string result = await response.Content.ReadAsStringAsync();
+            var category = JsonConvert.DeserializeObject<Category>(result);
+            return category;
         }
     }
 }

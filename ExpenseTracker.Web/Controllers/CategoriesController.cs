@@ -66,6 +66,7 @@ namespace ExpenseTracker.Web.Controllers
 
 
         #region Create
+        [HttpGet]
         public IActionResult Create()
         {
             var category = new CategoryDto();
