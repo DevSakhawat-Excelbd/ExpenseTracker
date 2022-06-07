@@ -17,15 +17,15 @@ namespace ExpenseTracker.Web.Controllers
         public async Task<IActionResult> Index()
         {
             var catagory = await GetById();
-            if (catagory == null)
-                return RedirectToAction("Index");
+            //if (catagory == null)
+            //    return RedirectToAction("Index");
             return View(catagory);
         }
 
         private async Task<CategoryDto?> GetById()
         {
             using var client = new HttpClient();
-            var response = await client.GetAsync($"http://localhost:5120/Categories/LoadCategory/");
+            var response = await client.GetAsync($"http://localhost:5120/Categories/LoadCategory");
             if (!response.IsSuccessStatusCode)
                 return null;
             string result = await response.Content.ReadAsStringAsync();
@@ -95,7 +95,7 @@ namespace ExpenseTracker.Web.Controllers
 
 
         #region Edit
-        public async Task<IActionResult>Edit(string categoryId)
+        public async Task<IActionResult>Edit()
         {
             var categories =await GetById();
             if (categories == null)
