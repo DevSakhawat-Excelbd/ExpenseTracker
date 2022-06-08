@@ -16,21 +16,21 @@ namespace ExpenseTracker.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var catagory = await GetById();
-            //if (catagory == null)
-            //    return RedirectToAction("Index");
+            var catagory = await GetAllCategory();
             return View(catagory);
         }
 
-        private async Task<CategoryDto?> GetById()
+        private async  Task <List<CategoryDto?>> GetAllCategory()
         {
             using var client = new HttpClient();
-            var response = await client.GetAsync($"http://localhost:5120/Categories/LoadCategory");
+            var response = await client.GetAsync($"http://localhost:5120/api/Categories/LoadCategory");
             if (!response.IsSuccessStatusCode)
-                return null;
+            {
+                return new List<CategoryDto>();
+            }               
             string result = await response.Content.ReadAsStringAsync();
-            var category = JsonConvert.DeserializeObject<CategoryDto>(result);
-            return category;
+            var category = JsonConvert.DeserializeObject<List<CategoryDto>>(result);
+            return category ?? new List<CategoryDto>(); ;
         }
 
         private async Task<CategoryDto> CreateCategory(CategoryDto categories)
@@ -97,7 +97,7 @@ namespace ExpenseTracker.Web.Controllers
         #region Edit
         public async Task<IActionResult>Edit()
         {
-            var categories =await GetById();
+            var categories =await GetAllCategory();
             if (categories == null)
                 return RedirectToAction("Index");
             return View(categories);

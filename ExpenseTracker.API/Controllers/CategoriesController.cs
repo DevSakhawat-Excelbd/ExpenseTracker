@@ -30,7 +30,7 @@ namespace ExpenseTracker.API.Controllers
       /// <returns></returns>
       [HttpGet]
       [Route("[action]")]
-      public async Task<IActionResult> LoadCategory(Guid categoryId)
+      public async Task<IActionResult> LoadCategory()
       {
          try
          {
