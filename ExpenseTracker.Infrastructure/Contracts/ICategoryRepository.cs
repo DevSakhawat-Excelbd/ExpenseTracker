@@ -9,6 +9,6 @@ namespace ExpenseTracker.Infrastructure.Contracts
 {
     public interface ICategoryRepository : IRepository<Category>
     {
-
+        IList<Category> LoadCategory();
     }
 }
