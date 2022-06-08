@@ -24,5 +24,10 @@ namespace ExpenseTracker.Domain.Entities
         [Column(TypeName="smalldatetime")]
         public DateTime? ModifiedDate { get; set; }
 
+        /// <summary>
+        /// Indicates the row is deleted or not.
+        /// </summary>
+        public bool? IsRowDeleted { get; set; }
+
     }
 }

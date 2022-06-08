@@ -34,6 +34,9 @@ namespace ExpenseTracker.Infrastructure.Sql.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("smalldatetime");
 
+                    b.Property<bool?>("IsRowDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("smalldatetime");
 
@@ -59,6 +62,9 @@ namespace ExpenseTracker.Infrastructure.Sql.Migrations
 
                     b.Property<DateTime>("ExpenseDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool?>("IsRowDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("smalldatetime");

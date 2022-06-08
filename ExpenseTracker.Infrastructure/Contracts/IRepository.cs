@@ -52,7 +52,7 @@ namespace ExpenseTracker.Infrastructure.Contracts
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        Task<T?> GetByIdAsync(int key);
+        Task<T?> GetByIdAsync(Guid key);
         /// <summary>
         /// Loads all rows from the database table.
         /// </summary>
@@ -70,7 +70,6 @@ namespace ExpenseTracker.Infrastructure.Contracts
         /// <param name="predicate"></param>
         /// <returns></returns>
         T FirstOrDefault(Expression<Func<T, bool>> predicate);
-      
-
+        
     }
 }
