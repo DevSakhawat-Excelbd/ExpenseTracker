@@ -16,39 +16,29 @@ namespace ExpenseTracker.Web.Controllers
             
             return View(expenseIn);
         }
-        public async Task<IActionResult> Create(string categoryId)
+        [HttpGet]
+        public IActionResult Create()
         {
-            var expense = await GetIdByCategoryId(categoryId);
-            ViewBag.CategoryId = categoryId;
-            var expenseDetailDto = new ExpenseDetail();
-            return View(expenseDetailDto);
+            var expense = new ExpernseDetailDto();
+            return View(expense);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ExpernseDetailDto model)
         {
-            ExpernseDetailDto expernseDetail = new ExpernseDetailDto();
+            ExpernseDetailDto expernse = new ExpernseDetailDto
             {
-                expernseDetail.ExpenseDetaisId = model.ExpenseDetaisId;
-                expernseDetail.ExpenseAmount = model.ExpenseAmount;
-                expernseDetail.ExpenseDate = model.ExpenseDate;
-                expernseDetail.CreatedDate = model.CreatedDate;
+                ExpenseDetaisId = model.ExpenseDetaisId,
+                ExpenseDate = model.ExpenseDate,
+                ExpenseAmount = model.ExpenseAmount
+            };
+            var ExpenceAdd = await CreateExpenseDetail(expernse);
+            if(ExpenceAdd == null)
+            {
+                return View(expernse);
             }
-            var expenseDetailAdd=await CreateExpenseDetail(expernseDetail); 
-            if (expenseDetailAdd == null)
-            {
-                ViewBag.CategoryId = expernseDetail.CategoryId;
-                return View(expernseDetail);
-            }
-            return RedirectToAction("Index", new
-            {
-                expernseDetailId = expenseDetailAdd.ExpenseDetaisId.ToString(),
-                categoryId=expenseDetailAdd.CategoryId
-            
-            
-            });
-            
-            
+       
+            return RedirectToAction("Index", "ExpenseTrakers");
         }
         public async Task<IActionResult> Edit(string expenseDetaisId,string categoryId)
         {
@@ -86,7 +76,7 @@ namespace ExpenseTracker.Web.Controllers
             var data = JsonConvert.SerializeObject(expernseDetailDto);
             using var client=new HttpClient();
             var httpContent=new StringContent(data, Encoding.UTF8,"application/json");
-            var response = await client.PostAsync($"https://localhost:5120/Categories/AddCategory", httpContent);
+            var response = await client.PostAsync($"http://localhost:5120/ExpenceDetails/AddCategory", httpContent);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -101,7 +91,7 @@ namespace ExpenseTracker.Web.Controllers
             var data = JsonConvert.SerializeObject(expernseDetailDto);
             using var client = new HttpClient();
             var httpContent = new StringContent(data, Encoding.UTF8, "application/json");
-            var response = await client.PutAsync($"https://localhost:5120/Categories/AddCategory", httpContent);
+            var response = await client.PutAsync($"http://localhost:5120/ExpenceDetails/AddCategory", httpContent);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -111,22 +101,22 @@ namespace ExpenseTracker.Web.Controllers
             return JsonConvert.DeserializeObject<ExpernseDetailDto>(result);
         }
 
-        private async Task<ExpernseDetailDto>GetById(string expenseDetaisId)
+        private async Task< List<ExpernseDetailDto?>>GetById(string expenseDetaisId)
         {
             using var client =new HttpClient();
-            var response =await client.GetAsync($"https://localhost:5120/Categories/LoadExpenseDetail/{expenseDetaisId}");
+            var response =await client.GetAsync($"http://localhost:5120/ExpenceDetails/LoadExpenseDetail/{expenseDetaisId}");
             if (!response.IsSuccessStatusCode)
-
-                return null;
-
+            {
+                return new List<ExpernseDetailDto>();
+            }
             string result =await response.Content.ReadAsStringAsync();
-            var expenseDetail = JsonConvert.DeserializeObject<ExpernseDetailDto>(result);
-            return expenseDetail;
+            var expenseDetail = JsonConvert.DeserializeObject<List<ExpernseDetailDto>>(result);
+            return expenseDetail ?? new List<ExpernseDetailDto>(); ;
         }
         private async Task<List<ExpernseDetailDto>> GetIdByCategoryId(string categoryId)
         {
             using var client = new HttpClient();
-            var response = await client.GetAsync($"https://localhost:5120/Categories/LoadExpenseDetail/{categoryId}");
+            var response = await client.GetAsync($"http://localhost:5120/Categories/LoadExpenseDetail/{categoryId}");
             if (!response.IsSuccessStatusCode)
             {
                 return new List<ExpernseDetailDto>();
