@@ -9,23 +9,23 @@ using System.Threading.Tasks;
 
 namespace ExpenseTracker.Infrastructure.Repositories
 {
-    public class CategoryRepository : Repository<Category>, ICategoryRepository
-    {
-        protected readonly DataContext context;
-        public CategoryRepository(DataContext context) : base(context)
-        {
-            this.context = context;
-        }
+   public class CategoryRepository : Repository<Category>, ICategoryRepository
+   {
+      protected readonly DataContext context;
+      public CategoryRepository(DataContext context) : base(context)
+      {
+         this.context = context;
+      }
 
-        public IList<Category> LoadCategory()
-        {
-            var list = (from a in context.Categories
-                        where a.IsRowDeleted.Equals(false)
-                        select new Category
-                        {
-                            CategoryName = a.CategoryName,
-                        }).ToList();
-            return list;
-        }
-    }
+      public IList<Category> GetAllCategory()
+      {
+         var categoryList = (from c in context.Categories
+                             where c.IsRowDeleted.Equals(false)
+                             select new Category
+                             {
+                                CategoryName = c.CategoryName,
+                             }).ToList();
+         return categoryList;
+      }
+   }
 }

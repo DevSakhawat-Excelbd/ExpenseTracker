@@ -66,6 +66,7 @@ namespace ExpenseTracker.API.Controllers
             return StatusCode(StatusCodes.Status500InternalServerError, "Something went wrong!");
          }
       }
+
       /// <summary>
       /// Edit an Category
       /// </summary>
@@ -88,7 +89,7 @@ namespace ExpenseTracker.API.Controllers
                categoryEntity.CategoryName = category.CategoryName;
                categoryEntity.ModifiedDate = category.ModifiedDate;
             }
-            var categoryEdit =  unitOfWork.CategoryRepository.Update(categoryEntity);
+            var categoryEdit = unitOfWork.CategoryRepository.Update(categoryEntity);
             await unitOfWork.SaveChangesAsync();
 
             var categoryToResult = await unitOfWork.CategoryRepository.GetByIdAsync(category.CategoryId);
@@ -108,7 +109,7 @@ namespace ExpenseTracker.API.Controllers
       /// <returns></returns>
       [HttpGet]
       [Route("[action]/{key}")]
-      public async Task<IActionResult> FindCategoryByKey(Guid key)
+      public async Task<IActionResult> FindCategoryByKey(int key)
       {
          try
          {
@@ -123,9 +124,5 @@ namespace ExpenseTracker.API.Controllers
             return StatusCode(StatusCodes.Status500InternalServerError, "Something went wrong!");
          }
       }
-
-
-
-
    }
 }

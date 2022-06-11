@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ExpenseTracker.Infrastructure.Sql.Migrations
 {
-    public partial class A : Migration
+    public partial class CreateNewDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,7 +16,8 @@ namespace ExpenseTracker.Infrastructure.Sql.Migrations
                     CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CategoryName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "smalldatetime", nullable: true),
-                    ModifiedDate = table.Column<DateTime>(type: "smalldatetime", nullable: true)
+                    ModifiedDate = table.Column<DateTime>(type: "smalldatetime", nullable: true),
+                    IsRowDeleted = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -32,7 +33,8 @@ namespace ExpenseTracker.Infrastructure.Sql.Migrations
                     ExpenseAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "smalldatetime", nullable: true),
-                    ModifiedDate = table.Column<DateTime>(type: "smalldatetime", nullable: true)
+                    ModifiedDate = table.Column<DateTime>(type: "smalldatetime", nullable: true),
+                    IsRowDeleted = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {

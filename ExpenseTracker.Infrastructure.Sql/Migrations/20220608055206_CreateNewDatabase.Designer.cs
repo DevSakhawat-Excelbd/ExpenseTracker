@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExpenseTracker.Infrastructure.Sql.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220605063048_Database for ExpenseTracker")]
-    partial class DatabaseforExpenseTracker
+    [Migration("20220608055206_CreateNewDatabase")]
+    partial class CreateNewDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

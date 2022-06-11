@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace ExpenseTracker.Infrastructure.Contracts
 {
-    public interface ICategoryRepository : IRepository<Category>
-    {
-        IList<Category> LoadCategory();
-    }
+   public interface ICategoryRepository : IRepository<Category>
+   {
+      IList<Category> GetAllCategory();
+   }
 }

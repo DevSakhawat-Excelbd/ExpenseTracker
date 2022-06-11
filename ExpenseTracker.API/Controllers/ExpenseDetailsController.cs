@@ -15,34 +15,34 @@ namespace ExpenseTracker.API.Controllers
       {
          this.unitOfWork = unitOfWork;
       }
-      [HttpPost]
+
+      /// <summary>
+      /// Load All Expense Detail Entity
+      /// </summary>
+      /// <returns></returns>
+      [HttpGet]
       [Route("[action]")]
-      public async Task<IActionResult> AddExpenseDetail([FromBody] ExpernseDetailDto expernseDetailDto)
+      public async Task<IActionResult> LoadExpenseDetail()
       {
          try
          {
-            var ExpenseDatailsDb = new ExpenseDetail
-            {
-               ExpenseDetaisId = expernseDetailDto.ExpenseDetaisId,
-               ExpenseAmount = expernseDetailDto.ExpenseAmount,
-               ExpenseDate = expernseDetailDto.ExpenseDate,
-               CategoryId = expernseDetailDto.CategoryId,
-               CreatedDate = expernseDetailDto.CreatedDate
-               
-            };
-            var ExpenceDetaillsAdd = unitOfWork.ExpenseDetailRepository.Add(ExpenseDatailsDb);
-            await unitOfWork.SaveChangesAsync();
-            var expenseDetailReturn = await unitOfWork.ExpenseDetailRepository.GetByIdAsync(ExpenceDetaillsAdd.ExpenseDetaisId);
-            return Ok(expenseDetailReturn);
+            var expenseDetails = await unitOfWork.ExpenseDetailRepository.GetAll().ToListAsync();
+            return Ok(expenseDetails);
          }
          catch (Exception)
          {
-            return StatusCode(StatusCodes.Status500InternalServerError, "Something went  wrong!");
+            return StatusCode(StatusCodes.Status500InternalServerError, "Something went wrong!");
          }
       }
+
+      /// <summary>
+      /// Data Based on CategoryId
+      /// </summary>
+      /// <param name="categoryId"></param>
+      /// <returns></returns>
       [HttpGet]
       [Route("[action]/{categoryId}")]
-      public async Task<IActionResult> LoadExpenseDetail(Guid categoryId)
+      public async Task<IActionResult> CategoryBaseExpense(int categoryId)
       {
          try
          {
@@ -58,26 +58,58 @@ namespace ExpenseTracker.API.Controllers
             return StatusCode(StatusCodes.Status500InternalServerError, "Something want Wrong!");
          }
       }
-      [HttpPut]
+
+      /// <summary>
+      /// Insert Expense Details entity
+      /// </summary>
+      /// <param name="expenseDetailDto"></param>
+      /// <returns></returns>
+      [HttpPost]
       [Route("[action]")]
-      public async Task<IActionResult> EditExpenseDetail([FromBody] ExpernseDetailDto expernseDetailDto)
+      public async Task<IActionResult> AddExpenseDetail([FromBody] ExpenseDetailDto expenseDetailDto)
       {
          try
          {
-            if (expernseDetailDto.ExpenseDetaisId == Guid.Empty)
+            var ExpenseDatailsEntity = new ExpenseDetail
+            {
+               ExpenseDetailId = expenseDetailDto.ExpenseDetailId,
+               ExpenseAmount = expenseDetailDto.ExpenseAmount,
+               ExpenseDate = expenseDetailDto.ExpenseDate,
+               CategoryId = expenseDetailDto.CategoryId,
+               CreatedDate = expenseDetailDto.CreatedDate
+            };
+            var ExpenceDetaillsAdd = unitOfWork.ExpenseDetailRepository.Add(ExpenseDatailsEntity);
+            await unitOfWork.SaveChangesAsync();
+            var expenseDetailReturn = await unitOfWork.ExpenseDetailRepository.GetByIdAsync(ExpenceDetaillsAdd.ExpenseDetailId);
+            return Ok(expenseDetailReturn);
+         }
+         catch (Exception)
+         {
+            return StatusCode(StatusCodes.Status500InternalServerError, "Something went  wrong!");
+         }
+      }
+
+
+      [HttpPut]
+      [Route("[action]")]
+      public async Task<IActionResult> EditExpenseDetail([FromBody] ExpenseDetailDto expenseDetailDto)
+      {
+         try
+         {
+            if (expenseDetailDto.ExpenseDetailId == Guid.Empty)
                return BadRequest();
-            var expenseDetailDb = await unitOfWork.ExpenseDetailRepository.GetByIdAsync(expernseDetailDto.ExpenseDetaisId);
+            var expenseDetailDb = await unitOfWork.ExpenseDetailRepository.GetByIdAsync(expenseDetailDto.ExpenseDetailId);
             if (expenseDetailDb == null)
                return NotFound();
 
-            expenseDetailDb.ExpenseAmount = expernseDetailDto.ExpenseAmount;
-            expenseDetailDb.ExpenseDate = expernseDetailDto.ExpenseDate;
-            expenseDetailDb.ModifiedDate = expernseDetailDto.ModifiedDate;
-            expenseDetailDb.CategoryId = expernseDetailDto.CategoryId;
+            expenseDetailDb.ExpenseAmount = expenseDetailDto.ExpenseAmount;
+            expenseDetailDb.ExpenseDate = expenseDetailDto.ExpenseDate;
+            expenseDetailDb.ModifiedDate = expenseDetailDto.ModifiedDate;
+            expenseDetailDb.CategoryId = expenseDetailDto.CategoryId;
 
             var updateExpense = unitOfWork.ExpenseDetailRepository.Update(expenseDetailDb);
             await unitOfWork.SaveChangesAsync();
-            var expenseDetailReturn = await unitOfWork.ExpenseDetailRepository.GetByIdAsync(updateExpense.ExpenseDetaisId);
+            var expenseDetailReturn = await unitOfWork.ExpenseDetailRepository.GetByIdAsync(updateExpense.ExpenseDetailId);
             return Ok(expenseDetailReturn);
 
          }

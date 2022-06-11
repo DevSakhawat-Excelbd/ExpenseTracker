@@ -7,7 +7,7 @@ using System.Text;
 
 namespace ExpenseTracker.Web.Controllers
 {
-    public class ExpenseTrakersController : Controller
+    public class ExpenseDetailsContoller : Controller
     {
         public async Task<IActionResult>Index(string expenseDetaisId)
         {
@@ -25,24 +25,24 @@ namespace ExpenseTracker.Web.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ExpernseDetailDto model)
+        public async Task<IActionResult> Create(ExpenseDetailDto model)
         {
-            ExpernseDetailDto expernseDetail = new ExpernseDetailDto();
+         ExpenseDetailDto expenseDetail = new ExpenseDetailDto();
             {
-                expernseDetail.ExpenseDetaisId = model.ExpenseDetaisId;
-                expernseDetail.ExpenseAmount = model.ExpenseAmount;
-                expernseDetail.ExpenseDate = model.ExpenseDate;
-                expernseDetail.CreatedDate = model.CreatedDate;
+            expenseDetail.ExpenseDetailId = model.ExpenseDetailId;
+            expenseDetail.ExpenseAmount = model.ExpenseAmount;
+            expenseDetail.ExpenseDate = model.ExpenseDate;
+            expenseDetail.CreatedDate = model.CreatedDate;
             }
-            var expenseDetailAdd=await CreateExpenseDetail(expernseDetail); 
+            var expenseDetailAdd=await CreateExpenseDetail(expenseDetail); 
             if (expenseDetailAdd == null)
             {
-                ViewBag.CategoryId = expernseDetail.CategoryId;
-                return View(expernseDetail);
+                ViewBag.CategoryId = expenseDetail.CategoryId;
+                return View(expenseDetail);
             }
             return RedirectToAction("Index", new
             {
-                expernseDetailId = expenseDetailAdd.ExpenseDetaisId.ToString(),
+                expernseDetailId = expenseDetailAdd.ExpenseDetailId.ToString(),
                 categoryId=expenseDetailAdd.CategoryId
             
             
@@ -65,13 +65,13 @@ namespace ExpenseTracker.Web.Controllers
 
         [HttpPut]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(ExpernseDetailDto expernseDetailDto)
+        public async Task<IActionResult> Edit(ExpenseDetailDto expenseDetailDto)
         {
-            var expenseDetailUpadate = await UpadateExpenseDetail(expernseDetailDto);
+            var expenseDetailUpadate = await UpadateExpenseDetail(expenseDetailDto);
             if (expenseDetailUpadate == null)
             {
-                ViewBag.CategoryId = expernseDetailDto.CategoryId;
-                return View(expernseDetailDto);
+                ViewBag.CategoryId = expenseDetailDto.CategoryId;
+                return View(expenseDetailDto);
             }
                
             return RedirectToAction("Index", new
@@ -81,7 +81,7 @@ namespace ExpenseTracker.Web.Controllers
         }
 
 
-       private async Task<ExpernseDetailDto> CreateExpenseDetail(ExpernseDetailDto expernseDetailDto)
+       private async Task<ExpenseDetailDto> CreateExpenseDetail(ExpenseDetailDto expernseDetailDto)
         {
             var data = JsonConvert.SerializeObject(expernseDetailDto);
             using var client=new HttpClient();
@@ -93,10 +93,10 @@ namespace ExpenseTracker.Web.Controllers
                 return null;
             }
             string result =await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<ExpernseDetailDto>(result);
+            return JsonConvert.DeserializeObject<ExpenseDetailDto>(result);
         }
 
-        private async Task<ExpernseDetailDto> UpadateExpenseDetail(ExpernseDetailDto expernseDetailDto)
+        private async Task<ExpenseDetailDto> UpadateExpenseDetail(ExpenseDetailDto expernseDetailDto)
         {
             var data = JsonConvert.SerializeObject(expernseDetailDto);
             using var client = new HttpClient();
@@ -108,10 +108,10 @@ namespace ExpenseTracker.Web.Controllers
                 return null;
             }
             string result = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<ExpernseDetailDto>(result);
+            return JsonConvert.DeserializeObject<ExpenseDetailDto>(result);
         }
 
-        private async Task<ExpernseDetailDto>GetById(string expenseDetaisId)
+        private async Task<ExpenseDetailDto>GetById(string expenseDetaisId)
         {
             using var client =new HttpClient();
             var response =await client.GetAsync($"https://localhost:5120/Categories/LoadExpenseDetail/{expenseDetaisId}");
@@ -120,22 +120,22 @@ namespace ExpenseTracker.Web.Controllers
                 return null;
 
             string result =await response.Content.ReadAsStringAsync();
-            var expenseDetail = JsonConvert.DeserializeObject<ExpernseDetailDto>(result);
+            var expenseDetail = JsonConvert.DeserializeObject<ExpenseDetailDto>(result);
             return expenseDetail;
         }
-        private async Task<List<ExpernseDetailDto>> GetIdByCategoryId(string categoryId)
+        private async Task<List<ExpenseDetailDto>> GetIdByCategoryId(string categoryId)
         {
             using var client = new HttpClient();
             var response = await client.GetAsync($"https://localhost:5120/Categories/LoadExpenseDetail/{categoryId}");
             if (!response.IsSuccessStatusCode)
             {
-                return new List<ExpernseDetailDto>();
+                return new List<ExpenseDetailDto>();
             }
 
             string result = await response.Content.ReadAsStringAsync();
 
-            var admissions = JsonConvert.DeserializeObject<List<ExpernseDetailDto>>(result);
-            return admissions ?? new List<ExpernseDetailDto>();
+            var admissions = JsonConvert.DeserializeObject<List<ExpenseDetailDto>>(result);
+            return admissions ?? new List<ExpenseDetailDto>();
         }
     }
 
