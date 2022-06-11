@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ExpenseTracker.Infrastructure.Sql.Migrations
 {
-    public partial class CreateNewDatabase : Migration
+    public partial class CreateDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,7 +13,8 @@ namespace ExpenseTracker.Infrastructure.Sql.Migrations
                 name: "Categories",
                 columns: table => new
                 {
-                    CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     CategoryName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "smalldatetime", nullable: true),
                     ModifiedDate = table.Column<DateTime>(type: "smalldatetime", nullable: true),
@@ -28,17 +29,17 @@ namespace ExpenseTracker.Infrastructure.Sql.Migrations
                 name: "ExpenseDetails",
                 columns: table => new
                 {
-                    ExpenseDetaisId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ExpenseDetailId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ExpenseDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ExpenseAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "smalldatetime", nullable: true),
                     ModifiedDate = table.Column<DateTime>(type: "smalldatetime", nullable: true),
                     IsRowDeleted = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ExpenseDetails", x => x.ExpenseDetaisId);
+                    table.PrimaryKey("PK_ExpenseDetails", x => x.ExpenseDetailId);
                     table.ForeignKey(
                         name: "FK_ExpenseDetails_Categories_CategoryId",
                         column: x => x.CategoryId,

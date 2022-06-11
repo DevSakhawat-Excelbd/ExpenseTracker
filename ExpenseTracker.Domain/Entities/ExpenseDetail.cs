@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ExpenseTracker.Domain.Entities
 {
-   public class ExpenseDetail : BaseModel
+   public class ExpenseDetail: BaseModel
    {
       [Key]
 
