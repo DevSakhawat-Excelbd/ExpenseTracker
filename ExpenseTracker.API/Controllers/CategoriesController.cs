@@ -87,6 +87,7 @@ namespace ExpenseTracker.API.Controllers
             {
                categoryEntity.CategoryId = category.CategoryId;
                categoryEntity.CategoryName = category.CategoryName;
+               categoryEntity.CreatedDate = category.CreatedDate;
                categoryEntity.ModifiedDate = category.ModifiedDate;
             }
             var categoryEdit = unitOfWork.CategoryRepository.Update(categoryEntity);
