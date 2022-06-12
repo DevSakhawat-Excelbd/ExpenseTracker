@@ -34,6 +34,7 @@ builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer(configuration.Get
 builder.Services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddTransient<ICategoryRepository, CategoryRepository>();
+builder.Services.AddTransient<IExpenseDetailRepository,ExpenseDetailRepository>();
 
 
 var app = builder.Build();
