@@ -164,20 +164,6 @@ namespace ExpenseTracker.Web.Controllers
          return View(categoryInfo);
       }
 
-      private async Task<CategoryDto?> GetById(int categoryId)
-      {
-         using var client = new HttpClient();
-         var response = await client.GetAsync($"http://localhost:5120/api/Categories/FindCategoryByKey/{categoryId}");
-         if (!response.IsSuccessStatusCode)
-         {
-            return null;
-         }
-         string result = await response.Content.ReadAsStringAsync();
-         var categoryInfo = JsonConvert.DeserializeObject<CategoryDto>(result);
-
-         return categoryInfo;
-      }
-
 
       [HttpPost]
       [ValidateAntiForgeryToken]
@@ -210,5 +196,93 @@ namespace ExpenseTracker.Web.Controllers
          return JsonConvert.DeserializeObject<CategoryDto>(result);
       }
       #endregion end-edit
+
+
+      #region Start-Category-Delete
+      //private async Task<CategoryDto> DeleteCategory(CategoryDto categories)
+      //{
+      //   var data = JsonConvert.SerializeObject(categories);
+      //   using var client = new HttpClient();
+      //   var httpContent = new StringContent(data, Encoding.UTF8, "application/json");
+      //   var response = await client.PostAsync($"http://localhost:5120/api/Categories/DeleteCategory", httpContent);
+
+      //   if (!response.IsSuccessStatusCode)
+      //      return null;
+
+      //   string result = await response.Content.ReadAsStringAsync();
+      //   return JsonConvert.DeserializeObject<CategoryDto>(result);
+      //}
+
+      [HttpGet]
+      //public async Task<IActionResult> Delete(int categoryId)
+      //{
+      //   var categoryDelInfo = await GetById(categoryId);
+
+      //   if (categoryDelInfo == null)
+      //      return RedirectToAction("Index");
+
+      //   return View(categoryDelInfo);
+      //}
+      //[HttpPost]
+      //[ValidateAntiForgeryToken]
+      //public async Task<IActionResult> Delete(CategoryDto categories)
+      //{
+      //   CategoryDto category = new CategoryDto
+      //   {
+      //      CategoryId = categories.CategoryId,
+      //      CategoryName = categories.CategoryName,
+      //      CreatedDate = categories.CreatedDate,
+      //      ModifiedDate = categories.ModifiedDate
+      //   };
+      //   var CategoryUpdated = await DeleteCategory(category);
+      //   if (CategoryUpdated == null)
+      //      return View(categories);
+      //   return RedirectToAction("Index", categories);
+      //}
+
+      [HttpGet]
+      public async Task<IActionResult> Delete(int categoryId)
+      {
+         var category = new CategoryDto();
+         using (var client = new HttpClient())
+         {
+
+            var response = await client.GetAsync("http://localhost:5120/api/Categories/FindCategoryByKey?categoryId=" + categoryId);
+            string result = response.Content.ReadAsStringAsync().Result;
+            category = JsonConvert.DeserializeObject<CategoryDto>(result);
+         }
+         return View(category);
+      }
+      [HttpPost]
+      public async Task<IActionResult> Delete(CategoryDto category)
+      {
+         var categoryJson = JsonConvert.SerializeObject(category);
+         using (var client = new HttpClient())
+         {
+            HttpContent httpContent = new StringContent(categoryJson, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync("http://localhost:5120/api/Categories/DeleteCategory", httpContent);
+
+            string result = response.Content.ReadAsStringAsync().Result;
+         }
+         return RedirectToAction("Index");
+      }
+      #endregion End-Category-Delete
+
+
+
+      private async Task<CategoryDto?> GetById(int categoryId)
+      {
+         var categoryInfo = new CategoryDto();
+         using var client = new HttpClient();
+         var response = await client.GetAsync($"http://localhost:5120/api/Categories/FindCategoryByKey/{categoryId}");
+         if (!response.IsSuccessStatusCode)
+         {
+            return null;
+         }
+         string result = await response.Content.ReadAsStringAsync();
+         categoryInfo = JsonConvert.DeserializeObject<CategoryDto>(result);
+
+         return categoryInfo;
+      }
    }
 }

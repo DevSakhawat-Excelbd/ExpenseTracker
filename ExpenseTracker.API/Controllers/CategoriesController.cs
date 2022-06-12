@@ -1,7 +1,6 @@
 ﻿using ExpenseTracker.Domain.Dto;
 using ExpenseTracker.Domain.Entities;
 using ExpenseTracker.Infrastructure.Contracts;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -54,7 +53,7 @@ namespace ExpenseTracker.API.Controllers
                CategoryId = categoryDto.CategoryId,
                CategoryName = categoryDto.CategoryName,
                CreatedDate = categoryDto.CreatedDate
-         };
+            };
             var categoryAdded = unitOfWork.CategoryRepository.Add(categoryInId);
             await unitOfWork.SaveChangesAsync();
 
@@ -100,6 +99,43 @@ namespace ExpenseTracker.API.Controllers
          {
             return StatusCode(StatusCodes.Status500InternalServerError, "Something went wrong!");
          }
+      }
+
+
+      //[HttpPost("delete")]
+      [HttpPost]
+      public async Task<IActionResult> DeleteCategory([FromBody] CategoryDto category)
+      {
+         try
+         {
+            var categoryEntity = await unitOfWork.CategoryRepository.GetByIdAsync(category.CategoryId);
+            if (categoryEntity == null)
+            {
+               return NotFound();
+            }
+            else
+            {
+               categoryEntity.CategoryId = category.CategoryId;
+               categoryEntity.CategoryName = category.CategoryName;
+               categoryEntity.ModifiedDate = category.ModifiedDate;
+               categoryEntity.CreatedDate = category.CreatedDate;
+            }
+            unitOfWork.CategoryRepository.Delete(categoryEntity);
+            await unitOfWork.SaveChangesAsync();
+
+            //var categoryToResult = await unitOfWork.CategoryRepository.GetByIdAsync(category.CategoryId);
+
+            //return Ok(categoryToResult);
+
+            //unitOfWork.CategoryRepository.Delete(categoryEntity);
+            //unitOfWork.SaveChanges();
+            return Ok();
+         }
+         catch (Exception)
+         {
+            return StatusCode(StatusCodes.Status500InternalServerError, "Something went wrong!");
+         }
+         
       }
 
 

@@ -74,7 +74,16 @@ namespace ExpenseTracker.Infrastructure.Repositories
 
       public void Delete(T entity)
       {
-         throw new NotImplementedException();
+         try
+         {
+            entity.IsRowDeleted = true;
+            //entity.ModifiedDate = DateTime.Now;
+            context.Set<T>().Update(entity);
+         }
+         catch
+         {
+            throw;
+         }
       }
 
       public void RemoveRange(IEnumerable<T> entities)
