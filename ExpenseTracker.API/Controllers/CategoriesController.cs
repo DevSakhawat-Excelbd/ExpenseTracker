@@ -54,7 +54,7 @@ namespace ExpenseTracker.API.Controllers
                CategoryId = categoryDto.CategoryId,
                CategoryName = categoryDto.CategoryName,
                CreatedDate = categoryDto.CreatedDate
-            };
+         };
             var categoryAdded = unitOfWork.CategoryRepository.Add(categoryInId);
             await unitOfWork.SaveChangesAsync();
 
@@ -66,6 +66,7 @@ namespace ExpenseTracker.API.Controllers
             return StatusCode(StatusCodes.Status500InternalServerError, "Something went wrong!");
          }
       }
+
       /// <summary>
       /// Edit an Category
       /// </summary>
@@ -86,9 +87,9 @@ namespace ExpenseTracker.API.Controllers
             {
                categoryEntity.CategoryId = category.CategoryId;
                categoryEntity.CategoryName = category.CategoryName;
-               categoryEntity.ModifiedDate = category.ModifiedDate;
+               categoryEntity.ModifiedDate = DateTime.Now;
             }
-            var categoryEdit =  unitOfWork.CategoryRepository.Update(categoryEntity);
+            var categoryEdit = unitOfWork.CategoryRepository.Update(categoryEntity);
             await unitOfWork.SaveChangesAsync();
 
             var categoryToResult = await unitOfWork.CategoryRepository.GetByIdAsync(category.CategoryId);
@@ -101,6 +102,7 @@ namespace ExpenseTracker.API.Controllers
          }
       }
 
+
       /// <summary>
       /// Find Category by key
       /// </summary>
@@ -108,7 +110,7 @@ namespace ExpenseTracker.API.Controllers
       /// <returns></returns>
       [HttpGet]
       [Route("[action]/{key}")]
-      public async Task<IActionResult> FindCategoryByKey(Guid key)
+      public async Task<IActionResult> FindCategoryByKey(int key)
       {
          try
          {
@@ -123,9 +125,5 @@ namespace ExpenseTracker.API.Controllers
             return StatusCode(StatusCodes.Status500InternalServerError, "Something went wrong!");
          }
       }
-
-
-
-
    }
 }

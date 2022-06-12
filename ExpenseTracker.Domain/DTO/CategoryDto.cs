@@ -12,13 +12,13 @@ namespace ExpenseTracker.Domain.Dto
    /// Types of category
    /// </summary>
 
-   public class CategoryDto 
+   public class CategoryDto
    {
       /// <summary>
       /// Category Id
       /// </summary>
       [Key]
-      public Guid CategoryId { get; set; }
+      public int CategoryId { get; set; }
       /// <summary>
       /// Expense Category Name
       /// </summary>

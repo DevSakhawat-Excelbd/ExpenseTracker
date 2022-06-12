@@ -11,6 +11,5 @@ namespace ExpenseTracker.Infrastructure.Repositories
         {
             this.context = context;
         }
-
     }
 }

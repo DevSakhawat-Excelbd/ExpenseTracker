@@ -26,8 +26,9 @@ namespace ExpenseTracker.Infrastructure.Repositories
 
       public async Task SaveChangesAsync()
       {
-        await dbContext.SaveChangesAsync();
+         await dbContext.SaveChangesAsync();
       }
+
       #region Category
       private ICategoryRepository? categoryRepository;
       public ICategoryRepository CategoryRepository
@@ -39,7 +40,6 @@ namespace ExpenseTracker.Infrastructure.Repositories
 
             return categoryRepository;
          }
-         
       }
       #endregion Category
 

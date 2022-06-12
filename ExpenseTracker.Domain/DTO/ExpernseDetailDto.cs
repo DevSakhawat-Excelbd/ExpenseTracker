@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace ExpenseTracker.Domain.Dto
 {
-   public class ExpernseDetailDto
+   public class ExpenseDetailDto
    {
       /// <summary>
       /// Primary Key of Category Entity
       /// </summary>
       [Key]
-      public Guid ExpenseDetaisId { get; set; }
+      public Guid ExpenseDetailId { get; set; }
       /// <summary>
       /// Entry Expense date
       /// </summary>
@@ -26,7 +26,7 @@ namespace ExpenseTracker.Domain.Dto
       /// <summary>
       /// Foreign key, Primary key of the Category table.
       /// </summary>
-      public Guid CategoryId { get; set; }
+      public int CategoryId { get; set; }
       /// <summary>
       /// Entry the created date
       /// </summary>
@@ -38,9 +38,9 @@ namespace ExpenseTracker.Domain.Dto
       [Column(TypeName = "smalldatetime")]
       public DateTime? ModifiedDate { get; set; }
 
-        /// <summary>
-        /// Indicates the row is deleted or not.
-        /// </summary>
-        //public bool? IsRowDeleted { get; set; }
-    }
+      /// <summary>
+      /// Indicates the row is deleted or not.
+      /// </summary>
+      //public bool? IsRowDeleted { get; set; }
+   }
 }

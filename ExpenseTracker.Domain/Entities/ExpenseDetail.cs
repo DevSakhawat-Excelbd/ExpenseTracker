@@ -4,21 +4,21 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ExpenseTracker.Domain.Entities
 {
-    public class ExpenseDetail:BaseModel
-    {
-        [Key]
-       
-        public Guid ExpenseDetaisId { get; set; }
-     
-   
-        public DateTime ExpenseDate { get; set; }
-     
+   public class ExpenseDetail: BaseModel
+   {
+      [Key]
 
-        public decimal ExpenseAmount { get; set; }
-    
-        public Guid CategoryId { get; set; }
+      public Guid ExpenseDetailId { get; set; }
 
-        [ForeignKey("CategoryId")]
-        public virtual Category Category { get; set; }
-    }
+
+      public DateTime ExpenseDate { get; set; }
+
+
+      public decimal ExpenseAmount { get; set; }
+
+      public int CategoryId { get; set; }
+
+      [ForeignKey("CategoryId")]
+      public virtual Category Category { get; set; }
+   }
 }

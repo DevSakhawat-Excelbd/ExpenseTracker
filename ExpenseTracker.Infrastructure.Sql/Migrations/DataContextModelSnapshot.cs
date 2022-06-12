@@ -24,9 +24,11 @@ namespace ExpenseTracker.Infrastructure.Sql.Migrations
 
             modelBuilder.Entity("ExpenseTracker.Domain.Entities.Category", b =>
                 {
-                    b.Property<Guid>("CategoryId")
+                    b.Property<int>("CategoryId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryId"), 1L, 1);
 
                     b.Property<string>("CategoryName")
                         .HasColumnType("nvarchar(max)");
@@ -47,12 +49,12 @@ namespace ExpenseTracker.Infrastructure.Sql.Migrations
 
             modelBuilder.Entity("ExpenseTracker.Domain.Entities.ExpenseDetail", b =>
                 {
-                    b.Property<Guid>("ExpenseDetaisId")
+                    b.Property<Guid>("ExpenseDetailId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CategoryId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("smalldatetime");
@@ -69,7 +71,7 @@ namespace ExpenseTracker.Infrastructure.Sql.Migrations
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("smalldatetime");
 
-                    b.HasKey("ExpenseDetaisId");
+                    b.HasKey("ExpenseDetailId");
 
                     b.HasIndex("CategoryId");
 

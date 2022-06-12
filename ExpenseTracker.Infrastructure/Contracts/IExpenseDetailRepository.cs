@@ -9,7 +9,5 @@ namespace ExpenseTracker.Infrastructure.Contracts
 {
     public interface IExpenseDetailRepository:IRepository<ExpenseDetail>
     {
-        
-
     }
 }
