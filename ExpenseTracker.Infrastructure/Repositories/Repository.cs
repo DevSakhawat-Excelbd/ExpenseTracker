@@ -72,7 +72,6 @@ namespace ExpenseTracker.Infrastructure.Repositories
          return entity;
       }
 
-
       public void Delete(T entity)
       {
          throw new NotImplementedException();

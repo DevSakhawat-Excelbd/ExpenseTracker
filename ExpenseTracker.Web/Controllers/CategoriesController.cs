@@ -85,12 +85,6 @@ namespace ExpenseTracker.Web.Controllers
 {
    public class CategoriesController : Controller
    {
-      //private readonly ILogger<CategoriesController> _logger;
-      //public CategoriesController(ILogger<CategoriesController> logger)
-      //{
-      //   _logger = logger;
-      //}
-
       #region start-index
       [HttpGet]
       public async Task<IActionResult> Index()
@@ -121,6 +115,7 @@ namespace ExpenseTracker.Web.Controllers
 
          return View(category);
       }
+
       [HttpPost]
       [ValidateAntiForgeryToken]
       public async Task<IActionResult> Create(CategoryDto model)
@@ -129,7 +124,7 @@ namespace ExpenseTracker.Web.Controllers
          {
             CategoryId = model.CategoryId,
             CategoryName = model.CategoryName,
-            CreatedDate = model.CreatedDate
+            CreatedDate = DateTime.Now
          };
          var CreateCategoryAdded = await CreateCategory(category);
 
@@ -157,15 +152,8 @@ namespace ExpenseTracker.Web.Controllers
       }
       #endregion end-create
 
-      #region start-edit
-      //public async Task<IActionResult> Edit()
-      //{
-      //   var categories = await GetAllCategory();
-      //   if (categories == null)
-      //      return RedirectToAction("Index");
-      //   return View(categories);
-      //}
 
+      #region start-edit
       public async Task<IActionResult> Edit(int categoryId)
       {
          var categoryInfo = await GetById(categoryId);
@@ -206,10 +194,6 @@ namespace ExpenseTracker.Web.Controllers
          if (CategoryUpdated == null)
             return View(categories);
          return RedirectToAction("Index", categories);
-         //return RedirectToAction("Index", new
-         //{
-         //   categoryId = CategoryUpdated.CategoryId.ToString()
-         //});
       }
 
       private async Task<CategoryDto> UpdateCategory(CategoryDto categories)
@@ -221,7 +205,6 @@ namespace ExpenseTracker.Web.Controllers
 
          if (!response.IsSuccessStatusCode)
             return null;
-
 
          string result = await response.Content.ReadAsStringAsync();
          return JsonConvert.DeserializeObject<CategoryDto>(result);

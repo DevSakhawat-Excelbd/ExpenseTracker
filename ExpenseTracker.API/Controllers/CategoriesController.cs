@@ -54,7 +54,7 @@ namespace ExpenseTracker.API.Controllers
                CategoryId = categoryDto.CategoryId,
                CategoryName = categoryDto.CategoryName,
                CreatedDate = categoryDto.CreatedDate
-            };
+         };
             var categoryAdded = unitOfWork.CategoryRepository.Add(categoryInId);
             await unitOfWork.SaveChangesAsync();
 
@@ -87,8 +87,7 @@ namespace ExpenseTracker.API.Controllers
             {
                categoryEntity.CategoryId = category.CategoryId;
                categoryEntity.CategoryName = category.CategoryName;
-               categoryEntity.CreatedDate = category.CreatedDate;
-               categoryEntity.ModifiedDate = category.ModifiedDate;
+               categoryEntity.ModifiedDate = DateTime.Now;
             }
             var categoryEdit = unitOfWork.CategoryRepository.Update(categoryEntity);
             await unitOfWork.SaveChangesAsync();
@@ -102,6 +101,7 @@ namespace ExpenseTracker.API.Controllers
             return StatusCode(StatusCodes.Status500InternalServerError, "Something went wrong!");
          }
       }
+
 
       /// <summary>
       /// Find Category by key

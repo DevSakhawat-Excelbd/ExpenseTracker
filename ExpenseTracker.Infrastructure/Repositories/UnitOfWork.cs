@@ -28,6 +28,7 @@ namespace ExpenseTracker.Infrastructure.Repositories
       {
          await dbContext.SaveChangesAsync();
       }
+
       #region Category
       private ICategoryRepository? categoryRepository;
       public ICategoryRepository CategoryRepository
