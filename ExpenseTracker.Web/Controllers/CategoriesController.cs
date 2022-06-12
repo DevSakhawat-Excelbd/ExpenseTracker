@@ -213,7 +213,7 @@ namespace ExpenseTracker.Web.Controllers
       //   return JsonConvert.DeserializeObject<CategoryDto>(result);
       //}
 
-      [HttpGet]
+      //[HttpGet]
       //public async Task<IActionResult> Delete(int categoryId)
       //{
       //   var categoryDelInfo = await GetById(categoryId);
@@ -239,20 +239,20 @@ namespace ExpenseTracker.Web.Controllers
       //      return View(categories);
       //   return RedirectToAction("Index", categories);
       //}
-
       [HttpGet]
       public async Task<IActionResult> Delete(int categoryId)
       {
          var category = new CategoryDto();
          using (var client = new HttpClient())
          {
-
-            var response = await client.GetAsync("http://localhost:5120/api/Categories/FindCategoryByKey?categoryId=" + categoryId);
+            var response = await client.GetAsync("http://localhost:5120/api/Categories/GetDataById?categoryId=" + categoryId);
             string result = response.Content.ReadAsStringAsync().Result;
             category = JsonConvert.DeserializeObject<CategoryDto>(result);
          }
          return View(category);
       }
+
+      //[HttpPost("DeleteConfirm")]
       [HttpPost]
       public async Task<IActionResult> Delete(CategoryDto category)
       {
@@ -264,7 +264,7 @@ namespace ExpenseTracker.Web.Controllers
 
             string result = response.Content.ReadAsStringAsync().Result;
          }
-         return RedirectToAction("Index");
+         return RedirectToAction("Index", category);
       }
       #endregion End-Category-Delete
 

@@ -51,6 +51,20 @@ namespace ExpenseTracker.Infrastructure.Repositories
          }
       }
 
+      public void Delete(T entity)
+      {
+         try
+         {
+            entity.IsRowDeleted = true;
+            entity.ModifiedDate = DateTime.Now;
+            context.Set<T>().Update(entity);
+         }
+         catch
+         {
+            throw;
+         }
+      }
+
       public IEnumerable<T> GetAll()
       {
          try
@@ -72,95 +86,36 @@ namespace ExpenseTracker.Infrastructure.Repositories
          return entity;
       }
 
-      public void Delete(T entity)
-      {
-         try
-         {
-            entity.IsRowDeleted = true;
-            //entity.ModifiedDate = DateTime.Now;
-            context.Set<T>().Update(entity);
-         }
-         catch
-         {
-            throw;
-         }
-      }
+
 
       public void RemoveRange(IEnumerable<T> entities)
       {
          context.Set<T>().RemoveRange(entities);
       }
 
-      public T FirstOrDefault(Expression<Func<T, bool>> predicate)
-      {
-         try
-         {
-            return context.Set<T>().AsQueryable().AsNoTracking().FirstOrDefault(predicate);
-         }
-         catch (Exception)
-         {
-
-            throw;
-         }
-      }
-
       public async Task<T?> FirstOrDefaultAsync(Expression<Func<T?, bool>> predicate)
       {
-         return await context.Set<T>().AsQueryable().AsNoTracking().FirstOrDefaultAsync(predicate);
-      }
-
-      public IEnumerable<T> Query(Expression<Func<T, bool>> predicate)
-      {
-         var entity = context.Set<T>().AsNoTracking().Where(predicate);
-         return entity;
-      }
-
-
-
-      IQueryable<T> IRepository<T>.Query(Expression<Func<T, bool>> predicate)
-      {
-         throw new NotImplementedException();
-      }
-
-      public virtual T GetById(Guid id)
-      {
          try
          {
-            var entity = context.Set<T>().Find(id);
-            context.Entry(entity).State = EntityState.Detached;
-            return entity;
-         }
-         catch (Exception)
-         {
-
-            throw;
-         }
-      }
-
-      public T GetById(int Key)
-      {
-         try
-         {
-            var entity = context.Set<T>().Find(Key);
-            context.Entry(entity).State = EntityState.Detached;
-            return entity;
+            return await context.Set<T>().AsQueryable().AsNoTracking().FirstOrDefaultAsync(predicate);
          }
          catch (Exception)
          {
             throw;
          }
+
       }
 
-      public async Task<T?> GetByIdAsync(Guid key)
+      public async Task<T?> FindByIdAsync(int key)
       {
-         var entity = await context.Set<T>().FindAsync(key);
-         if (entity == null)
+         try
          {
-            return null;
+            return await context.Set<T>().FindAsync(key);
          }
-
-         context.Entry(entity).State = EntityState.Detached;
-         return entity;
+         catch
+         {
+            throw;
+         }
       }
 
       public async Task<T?> GetByIdAsync(int key)
@@ -170,8 +125,34 @@ namespace ExpenseTracker.Infrastructure.Repositories
          {
             return null;
          }
-
          context.Entry(entity).State = EntityState.Detached;
+         return entity;
+      }
+
+      public async Task<T?> GetByIdAsync(Guid key)
+      {
+         var entity = await context.Set<T>().FindAsync(key);
+         if (entity == null)
+         {
+            return null;
+         }
+         context.Entry(entity).State = EntityState.Detached;
+         return entity;
+      }
+
+      public Task<T?> FirstOrDefault(Expression<Func<T, bool>> predicate)
+      {
+         throw new NotImplementedException();
+      }
+
+      IQueryable<T> IRepository<T>.Query(Expression<Func<T, bool>> predicate)
+      {
+         throw new NotImplementedException();
+      }
+
+      public IEnumerable<T> Query(Expression<Func<T, bool>> predicate)
+      {
+         var entity = context.Set<T>().AsNoTracking().Where(predicate);
          return entity;
       }
    }

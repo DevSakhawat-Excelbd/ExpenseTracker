@@ -39,8 +39,9 @@
     
     <form asp-action="Delete">
 @*        <input type="submit" value="Delete" class="btn btn-danger" /> |*@
-
-         <button class="btn btn-danger" type="submit">Delete</button> |
+         @*<button  class="btn btn-danger" type="submit">Delete</button> |*@
+@*         @Html.ActionLink("Delete", "Delete", new {  categoryId=Model.CategoryId  }) |*@
+         @Html.ActionLink("Delete", "DeleteConfirm", "Categories", null, new { @class= "btn btn-danger"}) |
         <a asp-action="Index">Back to List</a>
     </form>
 </div>

@@ -131,7 +131,7 @@ namespace ExpenseTracker.API.Controllers
       {
          try
          {
-            var expenseDetail = await unitOfWork.CategoryRepository.GetByIdAsync(key);
+            var expenseDetail = await unitOfWork.ExpenseDetailRepository.GetByIdAsync(key);
             if (expenseDetail == null)
                return NotFound();
 

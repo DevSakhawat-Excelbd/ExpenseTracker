@@ -47,6 +47,13 @@ namespace ExpenseTracker.Infrastructure.Contracts
 
 
       /// <summary>
+      /// Searches using primary key.
+      /// </summary>
+      /// <param name="key">Primary key of the table.</param>
+      /// <returns>Retrieved row in the form of model object.</returns>
+      Task<T?> FindByIdAsync(int key);
+
+      /// <summary>
       /// Searches using int primary key.
       /// </summary>
       /// <param name="id"></param>
@@ -78,7 +85,7 @@ namespace ExpenseTracker.Infrastructure.Contracts
       /// </summary>
       /// <param name="predicate"></param>
       /// <returns></returns>
-      T FirstOrDefault(Expression<Func<T, bool>> predicate);
+      Task<T?> FirstOrDefault(Expression<Func<T, bool>> predicate);
 
    }
 }
