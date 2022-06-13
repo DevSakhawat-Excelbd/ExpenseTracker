@@ -51,18 +51,26 @@ namespace ExpenseTracker.Web.Controllers
             
             
         }
-        [HttpGet]
-        public async Task<IActionResult> Edit(Guid expenseDetailsId,int categoryId)
+
+        public async Task<IActionResult> Edit(Guid id,int categoryId)
         {
-            //var expense = await GetIdByCategoryId();
-            //ViewData["CategoryId"] = new SelectList(expense, "CategoryId", "CategoryName");
-            var expernseDetail = await GetById(expenseDetailsId);
-            if (expernseDetail == null)
-            {
+            var expense = await GetIdByCategoryId();
+            ViewData["CategoryId"] = new SelectList(expense, "CategoryId", "CategoryName");
+            //var expernseDetail = await GetById(expenseDetailsId);
+            //if (expernseDetail == null)
+            //{
+            //    return RedirectToAction("Index");
+            //}
+
+            //return View(expernseDetail);
+
+            var expenseDetail = await GetById(id);
+
+            if (expenseDetail == null)
                 return RedirectToAction("Index");
-            }
-                
-            return View(expernseDetail);
+
+            return View(expenseDetail);
+
 
         }
 
@@ -142,10 +150,10 @@ namespace ExpenseTracker.Web.Controllers
             var admissions = JsonConvert.DeserializeObject<List<CategoryDto>>(result);
             return admissions ?? new List<CategoryDto>();
         }
-        private async Task<ExpenseDetailDto> GetById(Guid expenseDetailsId)
+        private async Task<ExpenseDetailDto?> GetById(Guid? id)
         {
             using var client = new HttpClient();
-            var response = await client.GetAsync($"http://localhost:5120/api/ExpenseDetails/FindExpenseDetailByKey/{expenseDetailsId}");
+            var response = await client.GetAsync($"http://localhost:5120/api/ExpenseDetails/FindExpenseDetailByKey/{id}");
             if (!response.IsSuccessStatusCode)
             {
                 return null;

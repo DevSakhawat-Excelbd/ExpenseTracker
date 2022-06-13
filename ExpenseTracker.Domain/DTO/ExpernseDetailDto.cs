@@ -15,10 +15,13 @@ namespace ExpenseTracker.Domain.Dto
       /// </summary>
       [Key]
       public Guid ExpenseDetailId { get; set; }
-      /// <summary>
-      /// Entry Expense date
-      /// </summary>
-      public DateTime ExpenseDate { get; set; }
+        /// <summary>
+        /// Entry Expense date
+        /// </summary>
+        [Required, DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Date Of Expenses")]
+        public DateTime ExpenseDate { get; set; }
       /// <summary>
       /// Expense Amount
       /// </summary>
@@ -42,5 +45,7 @@ namespace ExpenseTracker.Domain.Dto
       /// Indicates the row is deleted or not.
       /// </summary>
       //public bool? IsRowDeleted { get; set; }
+
+        public CategoryDto Category { get; set; }
    }
 }

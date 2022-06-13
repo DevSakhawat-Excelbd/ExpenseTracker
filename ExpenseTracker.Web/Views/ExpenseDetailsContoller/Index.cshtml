@@ -3,18 +3,20 @@
 @{
     ViewData["Title"] = "Index";
 }
-
+<div class="col-md-5 col-lg-10 offset-lg-3 offset-md-3 offset-sm-1 gx-2">
 <h1>Index</h1>
 
 <p>
-    <a asp-controller="ExpenseDetailsContoller" asp-action="Create">Create New</a>
+    <a asp-controller="ExpenseDetailsContoller" asp-action="Create" class="btn btn-primary">Create New</a>
 </p>
-<table class="table">
+</div>
+<div class="table-responsive-md col-md-5 col-lg-5 col-sm-3 offset-lg-3 offset-md-3 offset-sm-1">
+<table class="table table-striped">
     <thead>
         <tr>
-            <th>
+         @*   <th>
                 @Html.DisplayNameFor(model => model.ExpenseDetailId)
-            </th>
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.ExpenseDate)
             </th>
@@ -24,12 +26,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.CategoryId)
             </th>
-            <th>
+           @* <th>
                 @Html.DisplayNameFor(model => model.CreatedDate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ModifiedDate)
-            </th>
+            </th>*@
             <th></th>
         </tr>
     </thead>
@@ -39,9 +41,9 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>
+                  @*  <td>
                         @Html.DisplayFor(modelItem => item.ExpenseDetailId)
-                    </td>
+                    </td>*@
                     <td>
                         @Html.DisplayFor(modelItem => item.ExpenseDate)
                     </td>
@@ -51,19 +53,19 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.CategoryId)
                     </td>
-                    <td>
+                   @* <td>
                         @Html.DisplayFor(modelItem => item.CreatedDate)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.ModifiedDate)
-                    </td>
-                    <td>
-                         @Html.ActionLink("Edit", "Edit", new {  expenseDetailId=item.ExpenseDetailId  }) |
-                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    </td>*@
+                    <td class="btn btn-outline-warning">
+                         @Html.ActionLink("Edit", "Edit", new {  id=item.ExpenseDetailId  }) 
+                        
                     </td>
                 </tr>
             }
         }
     </tbody>
 </table>
+</div>

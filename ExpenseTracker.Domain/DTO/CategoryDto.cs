@@ -34,6 +34,7 @@ namespace ExpenseTracker.Domain.Dto
       /// </summary>
       [Column(TypeName = "smalldatetime")]
       public DateTime? ModifiedDate { get; set; }
+        
 
    }
 }
