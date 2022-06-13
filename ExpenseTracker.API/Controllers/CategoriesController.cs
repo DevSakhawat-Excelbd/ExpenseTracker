@@ -125,29 +125,29 @@ namespace ExpenseTracker.API.Controllers
       /// </summary>
       /// <param name="key"></param>
       /// <returns></returns>
-      //[HttpGet]
-      //[Route("[action]/{key}")]
-      //public async Task<IActionResult> FindCategoryByKey(int key)
-      //{
-      //   try
-      //   {
-      //      var category = await unitOfWork.CategoryRepository.GetByIdAsync(key);
-      //      if (category == null)
-      //         return NotFound();
-      //      return Ok(category);
-      //   }
-      //   catch (Exception)
-      //   {
-      //      return StatusCode(StatusCodes.Status500InternalServerError, "Something went wrong!");
-      //   }
-      //}
       [HttpGet]
-      [Route("[action]")]
-      public async Task<IActionResult> GetDataById(int categoryId)
+      [Route("[action]/{key}")]
+      public async Task<IActionResult> FindCategoryByKey(int key)
       {
-         var categoryEntity = await unitOfWork.CategoryRepository.FindByIdAsync(categoryId);
-         return Ok(categoryEntity);
+         try
+         {
+            var category = await unitOfWork.CategoryRepository.GetByIdAsync(key);
+            if (category == null)
+               return NotFound();
+            return Ok(category);
+         }
+         catch (Exception)
+         {
+            return StatusCode(StatusCodes.Status500InternalServerError, "Something went wrong!");
+         }
       }
+      //[HttpGet]
+      //[Route("[action]")]
+      //public async Task<IActionResult> GetDataById(int categoryId)
+      //{
+      //   var categoryEntity = await unitOfWork.CategoryRepository.FindByIdAsync(categoryId);
+      //   return Ok(categoryEntity);
+      //}
 
    }
 }

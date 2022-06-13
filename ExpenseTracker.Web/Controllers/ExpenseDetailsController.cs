@@ -7,16 +7,24 @@ using System.Text;
 
 namespace ExpenseTracker.Web.Controllers
 {
-    public class ExpenseDetailsContoller : Controller
+    public class ExpenseDetailsController : Controller
     {
-        public async Task<IActionResult>Index(string expenseDetaisId)
-        {
-            var expenseIn = await GetIdByCategoryId(expenseDetaisId);
-            expenseIn = expenseIn.OrderBy(x => x.CreatedDate).ThenByDescending(x => x.ExpenseDate).ToList();
-            
-            return View(expenseIn);
-        }
-        public async Task<IActionResult> Create(string categoryId)
+      #region Index
+      public async Task<IActionResult> Index()
+      {
+         var expense = new List<ExpenseDetailDto>();
+
+         using (var client = new HttpClient())
+         {
+            var response = await client.GetAsync($"http://localhost:5120/api/ExpenseDetails/LoadExpenseDetail");
+            var json = await response.Content.ReadAsStringAsync();
+            //string result = response.Content.ReadAsStringAsync().Result;
+            expense = JsonConvert.DeserializeObject<List<ExpenseDetailDto>>(json);
+         }
+         return View(expense);
+      }
+      #endregion
+      public async Task<IActionResult> Create(string categoryId)
         {
             var expense = await GetIdByCategoryId(categoryId);
             ViewBag.CategoryId = categoryId;
