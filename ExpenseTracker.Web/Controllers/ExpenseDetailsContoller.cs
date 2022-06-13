@@ -51,14 +51,15 @@ namespace ExpenseTracker.Web.Controllers
             
             
         }
-        public async Task<IActionResult> Edit(string expenseDetailsId,int categoryId)
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid expenseDetailsId,int categoryId)
         {
-            var expense = await GetIdByCategoryId();
-            ViewData["CategoryId"] = new SelectList(expense, "CategoryId", "CategoryName");
+            //var expense = await GetIdByCategoryId();
+            //ViewData["CategoryId"] = new SelectList(expense, "CategoryId", "CategoryName");
             var expernseDetail = await GetById(expenseDetailsId);
             if (expernseDetail == null)
             {
-                return RedirectToAction("Index", new {categoryId});
+                return RedirectToAction("Index");
             }
                 
             return View(expernseDetail);
@@ -141,7 +142,7 @@ namespace ExpenseTracker.Web.Controllers
             var admissions = JsonConvert.DeserializeObject<List<CategoryDto>>(result);
             return admissions ?? new List<CategoryDto>();
         }
-        private async Task<ExpenseDetailDto> GetById(string expenseDetailsId)
+        private async Task<ExpenseDetailDto> GetById(Guid expenseDetailsId)
         {
             using var client = new HttpClient();
             var response = await client.GetAsync($"http://localhost:5120/api/ExpenseDetails/FindExpenseDetailByKey/{expenseDetailsId}");
